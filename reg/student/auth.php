@@ -65,7 +65,7 @@
 				}
 			} else { // NEW
 				include("../resource/appwork/db_connect.php");
-				// หากินจาก stddata
+				$newstdlogin = $db -> query("SELECT stdcode,name,cgroup FROM stddata WHERE stdcode='".$_POST['username']."' AND natid = '".$_POST['password']."'");
 				$db -> close();
 				// คืนค่า $authen
 			}
