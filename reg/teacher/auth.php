@@ -51,13 +51,13 @@
 			// Array 2 -> 1,2,3,4 = Ldap Server Name or IP (Priority)
 			// Note : Each Ldap Server can authen all OU (But better authen nearly network)
 			// Teacher
-			$authenzone[1][0]="ou=teacher,dc=bodin,dc=ac,dc=th";
+			$authenzone[0][0]="ou=teacher,dc=bodin,dc=ac,dc=th";
+			$authenzone[0][1]="ldap01.bodin.ac.th";
+			$authenzone[0][2]="ldap02.bodin.ac.th";
+			// Employee
+			$authenzone[1][0]="ou=employee,dc=bodin,dc=ac,dc=th";
 			$authenzone[1][1]="ldap01.bodin.ac.th";
 			$authenzone[1][2]="ldap02.bodin.ac.th";
-			// Employee
-			$authenzone[2][0]="ou=employee,dc=bodin,dc=ac,dc=th";
-			$authenzone[2][1]="ldap01.bodin.ac.th";
-			$authenzone[2][2]="ldap02.bodin.ac.th";
 			$authen = "false";
 			$i = 1; while ($i < count($authenzone[$zone])) {
 				$authen = ldap_authen($authenzone[$zone][$i], $authenzone[$zone][0], $_POST['username'], $_POST['password']);
