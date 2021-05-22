@@ -95,24 +95,6 @@
 			}
 		}
 		
-		// Get /std/admission data
-		if (isset($_SESSION['user_auth'])) {
-			$cnfdata = $db -> query("SELECT cfm,cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
-			if (isset($_SESSION['user_data']["code2"])) {
-				$dupdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_data']["code2"]."'");
-				$has_dup = ($dupdata -> num_rows == 1);
-			} else $has_dup = false;
-			if ($cnfdata -> num_rows == 1 || $has_dup) { while ($rs = ($has_dup?$dupdata:$cnfdata) -> fetch_assoc()) {
-				$_SESSION['user_data']["adm"] = array(
-					"time" => $rs['time'],
-					"ip" => $rs['ip'],
-					"step" => 2,
-					"cgroup" => $rs['cgroup'],
-					"cfm" => $rs['cfm']
-				);
-			} } else $_SESSION['user_data']["adm"] = array("step" => 1);
-		}
-		
 		$db -> close();
 		
 	} else { header("Location: /reg/student/"); }

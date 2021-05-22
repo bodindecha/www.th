@@ -17,19 +17,8 @@
 			include("../../resource/appwork/db_connect.php");
 			include("../../resource/appwork/getip.php");
 			$chq_dup = $db -> query("SELECT time FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
-			if ($chq_dup -> num_rows == 0) {
-				$_POST['group'] = $_POST['group'];
-				if ($db -> query("INSERT INTO chdata (stdcode,cfm,cgroup,ip) VALUES ('".$_SESSION['user_id']."','".$_POST['right']."','".$_POST['group']."','$ip')")) {
-					$gtq = $db -> query("SELECT time FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
-					if ($gtq -> num_rows == 1) { while ($er = $gtq -> fetch_assoc()) $dt = $er['time']; }
-					else $dt = date("Y-m-d H:i:s", time()); $status = 0;
-					$_SESSION['user_data']["adm"]["cgroup"] = $_POST['group'];
-					$_SESSION['user_data']["adm"]["cfm"] = $_POST['right'];
-					$_SESSION['user_data']["adm"]["time"] = $dt;
-					$_SESSION['user_data']["adm"]["ip"] = $ip;
-				}
-				else $status = 2;
-			} else {
+			if ($chq_dup -> num_rows == 0) $status = ($db -> query("INSERT INTO chdata (stdcode,cfm,cgroup,ip) VALUES ('".$_SESSION['user_id']."','".$_POST['right']."','".$_POST['group']."','$ip')")) ? 0 : 2;
+			else {
 				$status = 3;
 				while ($mrs = $chq_dup -> fetch_assoc()) $reason = $mrs["time"];
 			}
@@ -37,7 +26,7 @@
 		}
 		if ($status==0) $_SESSION['user_data']["adm"]["step"]++;
 		header("Location: /reg/student/admission/?status=$status".(isset($reason)?"&reason=$reason":""));
-	} else if (isset($_SESSION['user_auth'])) {
+	} else if (isset($_SESSION['user_auth']) && time()<$_SESSION['user_data']["form_time_end"]) {
 		include("../../resource/appwork/appfunc.php");
 		include("../../resource/appwork/db_connect.php");
 		$choices = $db -> query("SELECT cgroup FROM stddata WHERE natid='".$_SESSION['user_data']["natid"]."'");
@@ -56,5 +45,5 @@
 			'<div class="text"><b>หมายเหตุ</b> การยืนยันสิทธิ์ มีผลต่อสิทธิ์การเข้าศึกษาต่อและการจัดแผนการเรียน</div>',
 			'<center><button name="data" class="blue" onClick="return cnf.validate()">บันทึกข้อมูล</button></center>',
 			'</form>';
-	} else echo '<center><div class="message gray">You are unauthorized</div></center>';
+	} else echo '<center><div class="message '.((time()<$_SESSION['user_data']["form_time_end"])?'gray">You are unauthorized':'yellow">ขณะนี้หมดเวลาในการใช้งานระบบแล้ว').'</div></center>';
 ?>

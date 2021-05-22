@@ -35,8 +35,13 @@ const cnf = {
 		}
 	}, tf : function(me) {
 		var ckq = $("div.form-action span.file i");
-		(me.files.length == 1) ? ckq.width(30) : ckq.width(0) ;
-		cnf.sttl(750, {x:32.5,y:0});
+		var cond = me.files.length == 1;
+		if (cond) {
+			let filename = (me.files[0].name).toLowerCase().split(".");
+			cond = (["png", "jpg", "jpeg", "pdf"].includes(filename[filename.length-1])) && (me.files[0].size < 10240000); // 10 MB
+		}
+		(cond) ? ckq.width(30) : ckq.width(0);
+		cnf.sttl(750, {x: (cond?32.5:0), y: 0});
 	}, sttl: function(speed, coord={x:0,y:0}) {
 		var tbl = $("div.form-action div.table"); tbl.animate({
 				// scrollTop: tbl.children().first().height()-tbl.height()+10+coord.y,

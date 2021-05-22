@@ -2,6 +2,28 @@
 	include("../../resource/hpe/init_ps.php");
 	$header_title = "Student";
 	$header_desc = "Admission | New student confirmation";
+	
+	// Set close date time
+	$_SESSION['user_data']["form_time_end"] = 1621935000; // ไปแปลงที่นี่เอา dracon.biz/timestamp.php (ตอนนี้ตั้งไว้ 2021-05-25 16-30-00) --> 1621935000
+	
+	// Get /std/admission data
+	if (isset($_SESSION['user_auth'])) { 
+		include("../../resource/appwork/db_connect.php");
+		$cnfdata = $db -> query("SELECT cfm,cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
+		if (isset($_SESSION['user_data']["code2"])) {
+			$dupdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_data']["code2"]."'");
+			$has_dup = ($dupdata -> num_rows == 1);
+		} else $has_dup = false;
+		if ($cnfdata -> num_rows == 1 || $has_dup) { while ($rs = ($has_dup?$dupdata:$cnfdata) -> fetch_assoc()) {
+			$_SESSION['user_data']["adm"] = array(
+				"time" => $rs['time'],
+				"ip" => $rs['ip'],
+				"step" => 2,
+				"cgroup" => $rs['cgroup'],
+				"cfm" => $rs['cfm']
+			);
+	} } else $_SESSION['user_data']["adm"] = array("step" => (time()<$_SESSION['user_data']["form_time_end"])?1:0);
+	}
 ?>
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,11 +68,15 @@
 					document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message '+(eti.cfm=="Y"?"green":"red")+'"><?php if(isset($_SESSION['user_name']))echo $_SESSION['user_name']; ?> รหัสประจำตัวนักเรียน / เลขประจำตัวผู้สอบ <?php if(isset($_SESSION['user_id']))echo $_SESSION['user_id']; ?> ได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
 				}
 			}
+			function open_not_time_form() {
+				document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message yellow">ขณะนี้หมดเวลาในการใช้งานระบบแล้ว</div></center>';
+			}
 			$(document).ready(function() {
 				<?php
 					if (isset($_SESSION['user_auth'])) {
 						include("../../resource/appwork/appfunc.php");
 						switch ($_SESSION['user_data']["adm"]["step"]) {
+							case 0: echo 'open_not_time_form();'; break;
 							case 1: echo 'open_confirmation_form();'; break;
 							case 2: echo 'open_complete_form({time: "'.$_SESSION['user_data']["adm"]["time"].'", ip: "'.$_SESSION['user_data']["adm"]["ip"].'", cgr: "'.code2group($_SESSION['user_data']["adm"]["cgroup"]).'", "cfm": "'.$_SESSION['user_data']["adm"]["cfm"].'"});'; break;
 							default: echo 'open_unconfirmed_form();'; break;
