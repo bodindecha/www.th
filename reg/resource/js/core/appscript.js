@@ -419,7 +419,7 @@ function initial_app() {
 		});
 		$.ajax({url: "/reg/resource/appwork/unauth.php?f=t"});
 	}
-	var auth_teacher = function() {
+	var auth_teacher = function(ru) {
 		var data = {u: $("section.lightbox input[name=\"user\"]").val(), p: $("section.lightbox input[name=\"pass\"]").val()};
 		if (data.u.trim()=="" || data.p.trim()=="") app.ui.notify(1, [2, "Please check your inputs.\nโปรดตรวจสอบข้อมูลการเข้าสู่ระบบ"]);
 		else {
@@ -435,6 +435,7 @@ function initial_app() {
 					$("html body header section div.head-item.auth").show();
 					$("html body header section div.head-item.menu aside.navigator_tab ul.so").show();
 					app.ui.lightbox.close();
+					location = "/"+(ru!=""?ru:"reg/teacher/");
 				} else {
 					app.ui.notify(1, [3, "Incorrect username or password"]);
 				}
@@ -478,7 +479,7 @@ function initial_app() {
 				submit: auth_submit,
 				tac: function(a="") { auth_tac(a); },
 				teacher: auth_teach,
-				t_sbmt: auth_teacher
+				t_sbmt: function(a="") { auth_teacher(a); }
 			}
 		}
 	};
