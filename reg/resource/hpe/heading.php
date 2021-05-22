@@ -12,7 +12,7 @@
 		<meta name="description" content="<?php echo $heading_desc;?>">
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<?php if ($_SERVER['REQUEST_URI'] != "/error/904") echo '<noscript><meta http-equiv="refresh" content="0; /error/904"></noscript>'; ?>
+		<?php if ($_SERVER['REQUEST_URI'] != "/error/904") echo '<noscript><meta http-equiv="refresh" content="0; /error.php?hsc=904"></noscript>'; ?>
 		<!-- Twitter card sharing prepare -->
 		<meta name="twitter:card" content="summary_large_image">
 		<!meta name="twitter:site" content="@tiantcl">
@@ -31,9 +31,9 @@
 		<meta property="og:locale" content="en_US" />
 		<meta property="og:locale:alternate" content="th_th" />
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="//<?php echo $heading_domain; ?>/" />
+		<meta property="og:url" content="https://<?php echo $heading_domain; ?>/" />
 		<meta property="og:site_name" content="<?php echo $heading_name; ?>" />
-		<!meta property="article:publisher" content="//<?php echo $heading_domain; ?>" />
+		<!meta property="article:publisher" content="https://<?php echo $heading_domain; ?>" />
 		<meta property="article:modified_time" content="2021-05-13T19:15:00+00:00" />
 		<!-- Third parties app setup -->
 		<!meta property="fb:app_id" content="132941421905432" />
@@ -49,7 +49,7 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="#15499A">
 		<link rel="apple-touch-icon" href="/reg/resource/images/cover-1.png">
 		<meta name="apple-mobile-web-app-capable" content="yes">
-		<link rel="canonical" href="//<?php echo $heading_domain; ?>"/>
+		<link rel="canonical" href="https://<?php echo $heading_domain; ?>"/>
 		<!-- Resources loading -->
 		<link rel="stylesheet" href="/reg/resource/css/core/appstyle.css">
 		<link rel="stylesheet" href="/reg/resource/css/core/stylevar.css">

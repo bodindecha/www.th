@@ -46,6 +46,10 @@
 	if (isset($_POST['zone'])) $zone = $_POST['zone'];
 	else $zone = 0; // Default Authen Zone (Login Web)
 	
+	// Protaego SQL injequetion
+	if (isset($_POST['ac'])) $_POST['ac'] = strval($db -> real_escape_string($_POST['ac']));
+	if (isset($_POST['ac_name'])) $_POST['ac_name'] = strval($db -> real_escape_string($_POST['ac_name']));
+	
 	// If submit action
 	if (isset($_SESSION['user_ac'])) unset($_SESSION['user_ac']);
 	if (isset($_POST['username']) && isset($_POST['password'])) {
@@ -128,7 +132,7 @@
 		include("../resource/hpe/header.php");
 		echo '<main shrink="'.(($_COOKIE['sui_open-nt'])??"false").'">
 			<div class="container">
-				<span>Please authorize to continue.<br></span>
+				<span>Please be authorized to continue.<br></span>
 				<button onClick="fac()" class="blue">Provide access code</button> <button onClick="app.sys.auth.teacher()" class="blue">Authenticate</button>
 			</div>
 		</main>';
