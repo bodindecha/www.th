@@ -395,14 +395,14 @@ function initial_app() {
 	var auth_tac = function(ru) {
 		app.ui.modal.open("Enter access code", {response: "string", type: "password", cfx: function(res) {
 			if (res!="") { // "IctBodin4113"
-				$.post("/reg/teacher/auth.php",{ac: res}, function(res2, hsc){
+				$.post("/reg/teacher/auth.php", {ac: res}, function(res2, hsc){
 					var dat = JSON.parse(res2);
 					if (dat.success) {
-						$.ajax({url: "/reg/resource/appwork/unauth.php?f=t"});
-						location = "/"+(ru!=""?ru:"reg/teacher/");
-						app.ui.modal.open("Authorization name", {response: "string", type: "text", cfx: function(res) {
-							$.post("/reg/teacher/auth.php",{ac_name: res});
-						})
+						setTimeout(function() { app.ui.modal.open("Authorization name", {response: "string", type: "text", cfx: function(res3) {
+							$.post("/reg/teacher/auth.php", {ac_name: res3}, function(res4, hsc2) {
+								location = "/"+(ru!=""?ru:"reg/teacher/");
+							});
+						}}); }, 500);
 					}
 					else {
 						setTimeout(window.fac, 500);
@@ -427,7 +427,7 @@ function initial_app() {
 			$.post("/reg/teacher/auth.php", {
 				username: data.u,
 				password: data.p,
-				zone: parseInt(document.querySelector("section.lightbox select").value)
+				zone: parseInt(document.querySelector('section.lightbox select[name="zone"]').value)
 			}, function(res, hsc) {
 				$("div.auth-wrapper button").removeAttr("disabled");
 				var dat = JSON.parse(res);

@@ -92,10 +92,12 @@
 		if (in_array($pac, $acs)) {
 			echo '{"success": true}';
 			$_SESSION['user_ac'] = true;
-		} else echo '{"success": false, "pac": "'.$pac.'"}';
+		} else echo '{"success": false}';
 		
 	} else if (isset($_POST['ac_name'])) {
 		check_perm(trim($_POST['ac_name']));
+		echo '{"success": true}';
+		$_SESSION['user_ac'] = true;
 	} else {
 		echo '<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -118,6 +120,7 @@
 			$(document).ready(function() {
 				// fac();
 				$("html body header section div.head-item.auth").remove();
+				$.ajax({url: "/reg/resource/appwork/unauth.php?f=t"});
 			}); var af_showed = false;
 		</script>
 	</head>
