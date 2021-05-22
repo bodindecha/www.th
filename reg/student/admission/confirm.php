@@ -9,7 +9,7 @@
 			if (!in_array($imageFileType, array("png", "jpg", "jpeg", "pdf"))) $uploadOk = false;
 			if ($uploadOk) {
 				if (file_exists($target_file)) unlink($target_file);
-				if (move_uploaded_file($_FILES["slip"]["tmp_name"], $target_file)) $reason = "Evidence uploaded successfully. ";
+				if (move_uploaded_file($_FILES["slip"]["tmp_name"], $target_file)) $reason = "Evidence uploaded successfully. ​";
 				else $status = 1;
 			} else $status = 1;
 		}
@@ -45,7 +45,7 @@
 			while ($choice = $choices -> fetch_assoc()) $cgroup_options .= '<option value="'.$choice['cgroup'].'">'.code2group($choice['cgroup']).'</option>';
 		}
 		
-		echo '<style type="text/css">div.form-action table{transform:translate(-1px,-1.5px);}div.form-action table tbody tr td > *,input[type="file"]{font-size:15px;}div.form-action.incf table tbody tr:nth-child(1) td:nth-child(2) > *{position:relative;top:-12.5px;}div.form-action a.t[role="button"]:before{content:"► "}div.form-action a.t[role="button"]:after{content:" ◄"}div.form-action input[type="radio"]{width:0px;height:0px;opacity:0;filter:opacity(0);}div.form-action i.material-icons{transform:translate(2.5px,7.5px);color:var(--clr-bs-green);font-size:30px;font-weight:bold;overflow:hidden;transition:var(--time-tst-medium)}</style>',
+		echo '<style type="text/css">div.form-action table{transform:translate(-1px,-1.5px);}div.form-action table tbody tr td > *,input[type="file"]{font-size:15px;}div.form-action.incf table tbody tr:nth-child(1) td:nth-child(2) > *{position:relative;top:-12.5px;}div.form-action a.t[role="button"]:before{content:"► "}div.form-action a.t[role="button"]:after{content:" ◄"}div.form-action input[type="radio"]{width:0px;height:0px;opacity:0;filter:opacity(0);}div.form-action i.material-icons{transform:translate(2.5px,7.5px);color:var(--clr-bs-green);font-size:30px;font-weight:bold;overflow:hidden;transition:var(--time-tst-medium);}</style>',
 			'<form method="post" action="/reg/student/admission/confirm.php" enctype="multipart/form-data">',
 			'<div class="text">ข้าพเจ้า <u class="name">'.$_SESSION['user_name'].'</u> รหัสประจำตัวนักเรียน (นักเรียนเดิม) / เลขประจำตัวผู้สอบ (นักเรียนใหม่) <u class="id">'.$_SESSION['user_id'].'</u> ได้รับการคัดเลือกเข้าศึกษาชั้นมัธยมศึกษาปีที่ 4 ปีการศึกษา 2564 ณ โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี) ประเภทห้องเรียนปกติ มีความประสงค์เลือกเรียนแผนการเรียน (ยืนยันได้เพียง 1 แผนการเรียนเท่านั้น) ดังนี้</div>',
 			'<div class="table"><table><tbody>',

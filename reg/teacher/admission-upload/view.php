@@ -102,7 +102,7 @@
 							while ($er = $cnfdata -> fetch_assoc()) {
 								$stdtype = (strlen($er['stdcode'])<6) ? "นักเรียนเก่า" : "สอบเข้าใหม่";
 								$stdchoice = ($er['cfm']=="Y") ? "ยืนยันสิทธิ์" : "สละสิทธิ์";
-								$stdgroup = code2group(strtoupper($er['cgroup']));
+								$stdgroup = ($er['cfm']=="Y") ? code2group(strtoupper($er['cgroup'])) : "";
 								$stdopt = ($er['cfm']=="N") ? '<a href="javascript:ve('.strval($i).')">ดูไฟล์หลักฐาน</a>' : "";
 								echo "<tr><td>".$er['stdcode']."</td><td>$stdtype</td><td>$stdchoice</td><td>$stdgroup</td><td>$stdopt</td></tr>";
 								$i++;
