@@ -86,24 +86,26 @@
 				$secondary_id = $db -> query("SELECT stdcode FROM stddata WHERE natid='".$_SESSION['user_data']["natid"]."' AND stdcode<>'".$_SESSION['user_id']."'");
 				if ($secondary_id -> num_rows == 1) { while ($gsi = $secondary_id -> fetch_assoc()) $_SESSION['user_data']["code2"] = $gsi['stdcode']; }
 			} else { // ถ้าไม่ผ่าน
-				echo '{"success": false}';
+				echo '{"success": false, "reason": '.($authen=="true"?'[1, "There isn\'t any record for your account yet."]':'[3,"Incorrect username or password."]').'}';
 			}
 		}
 		
 		// Get /std/admission data
 		if (isset($_SESSION['user_auth'])) {
-			$cnfdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
+			$cnfdata = $db -> query("SELECT cfm,cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
 			if (isset($_SESSION['user_data']["code2"])) {
 				$dupdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_data']["code2"]."'");
 				$has_dup = ($dupdata -> num_rows == 1);
 			} else $has_dup = false;
 			if ($cnfdata -> num_rows == 1 || $has_dup) { while ($rs = ($has_dup?$dupdata:$cnfdata) -> fetch_assoc()) {
-				$_SESSION['user_data']["adm"] = array();
-				$_SESSION['user_data']["adm"]["time"] = $rs['time'];
-				$_SESSION['user_data']["adm"]["ip"] = $rs['ip'];
-				$_SESSION['user_data']["adm"]["step"] =  ($has_dup || ctype_upper($rs['cgroup'])? 3 : 2);
-				$_SESSION['user_data']["adm"][(ctype_lower($rs['cgroup'])?"s":"c")."group"] = $rs['cgroup'];
-			} } else $_SESSION['user_data']["adm"]["step"] = 1;
+				$_SESSION['user_data']["adm"] = array(
+					"time" => $rs['time'],
+					"ip" => $rs['ip'],
+					"step" => 2,
+					"cgroup" => $rs['cgroup'],
+					"cfm" => $rs['cfm']
+				);
+			} } else $_SESSION['user_data']["adm"] = array("step" => 1);
 		}
 		
 		$db -> close();

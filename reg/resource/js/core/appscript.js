@@ -360,7 +360,7 @@ function initial_app() {
 		var is_homepage = /\/reg\/student\/$/.test(location.pathname);
 		if (md_var.showing) app.ui.modal.close();
 		app.ui.lightbox.open("top", {title: "เข้าสู่ระบบ", allowclose: is_homepage,
-			html: '<style type="text/css">div.auth-wrapper { margin: 10px 0px; padding: 5px; } div.auth-wrapper > * { margin: 2.5px 0px; font-size: 20px; font-family: "THSarabunNew", serif; } div.auth-wrapper label { display: block; } div.auth-wrapper label span { cursor: pointer; color: var(--clr-pp-blue-grey-700); } div.auth-wrapper label span:hover { background-color: rgba(0, 0, 0, 0.125); } div.auth-wrapper input { border-radius: 3px; border: 1px solid var(--clr-bs-gray-dark); padding: 0px 10px; width: calc(100% - 22.5px); transition: var(--time-tst-fast); } div.auth-wrapper input:focus { box-shadow: 0 0 7.5px .125px var(--clr-bs-blue) } input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; } input[type=number] { -moz-appearance: textfield; } div.auth-wrapper button { margin-top: 20px; } div.auth-wrapper font { font-size: 15px; } div.auth-wrapper font a:link, div.auth-wrapper font a:visited { text-decoration: none; color: var(--clr-bd-light-blue) } div.auth-wrapper font a:hover, div.auth-wrapper font a:active { text-decoration: underline; color: var(--clr-bd-low-light-blue) } @media only screen and (max-width: 768px) { div.auth-wrapper > * { font-size: 12.5px; } div.auth-wrapper font { font-size: 12.5px; } }</style><div class="auth-wrapper"><label>รหัสประจำตัวนักเรียน (นักเรียนเดิม) / เลขประจำตัวผู้สอบ (นักเรียนใหม่)</label><input name="user" type="number" autofocus><br><label>รหัสผ่าน (นักเรียนเดิม) / เลขประจำตัวประชาชน 13 หลัก (นักเรียนใหม่)</label><input name="pass" type="password"><br><center><button class="blue" onClick="app.sys.auth.submit()">ค้นหาข้อมูล</button></center>'+(is_homepage?"":'<br><center><font><a href="/reg/student/">กลับสู่หน้าหลัก (นักเรียน)</a> | <a href="/reg/teacher/">เข้าสู่ระบบอาจารย์</a></font></center>')+'</div>'
+			html: '<style type="text/css">div.auth-wrapper { margin: 10px 0px; padding: 5px; } div.auth-wrapper > * { margin: 2.5px 0px; font-size: 20px; font-family: "THSarabunNew", serif; } div.auth-wrapper label { display: block; } div.auth-wrapper label span { cursor: pointer; color: var(--clr-pp-blue-grey-700); } div.auth-wrapper label span:hover { background-color: rgba(0, 0, 0, 0.125); } div.auth-wrapper input { border-radius: 3px; border: 1px solid var(--clr-bs-gray-dark); padding: 0px 10px; width: calc(100% - 22.5px); transition: var(--time-tst-fast); } div.auth-wrapper input:focus { box-shadow: 0 0 7.5px .125px var(--clr-bs-blue) } input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; } input[type=number] { -moz-appearance: textfield; } div.auth-wrapper button { margin-top: 20px; } div.auth-wrapper font { font-size: 15px; } div.auth-wrapper font a:link, div.auth-wrapper font a:visited { text-decoration: none; color: var(--clr-bd-light-blue) } div.auth-wrapper font a:hover, div.auth-wrapper font a:active { text-decoration: underline; color: var(--clr-bd-low-light-blue) } @media only screen and (max-width: 768px) { div.auth-wrapper > * { font-size: 12.5px; } div.auth-wrapper font { font-size: 12.5px; } }</style><div class="auth-wrapper"><label>รหัสประจำตัวนักเรียน (นักเรียนเดิม) / เลขประจำตัวผู้สอบ (นักเรียนใหม่)</label><input name="user" type="number" autofocus><br><label>รหัสผ่าน (นักเรียนเดิม) / เลขประจำตัวประชาชน 13 หลัก (นักเรียนใหม่)</label><input name="pass" type="password"><br><center><button class="blue" onClick="app.sys.auth.submit()">ค้นหาข้อมูล</button></center>'+(is_homepage?"":'<br><center><font><a href="/reg/student/">กลับสู่หน้าหลัก (นักเรียน)</a> | <a href="/reg/teacher/">เข้าสู่ระบบครู</a></font></center>')+'</div>'
 		});
 		$("html body header section div.head-item.auth").hide();
 		$("html body header section div.head-item.menu aside.navigator_tab ul.so").hide();
@@ -371,20 +371,26 @@ function initial_app() {
 	var auth_submit = function() {
 		var data = {u: $("section.lightbox input[name=\"user\"]").val(), p: $("section.lightbox input[name=\"pass\"]").val()};
 		if (data.u.trim()=="" || data.p.trim()=="") app.ui.notify(1, [2, "Please check your inputs.\nโปรดตรวจสอบข้อมูลการเข้าสู่ระบบ"]);
-		else $.post("/reg/student/auth.php", {
-			username: data.u,
-			password: data.p,
-			zone: 0
-		}, function(res, hsc) {
-			var dat = JSON.parse(res);
-			if (dat.success) {
-				$("html body header section div.head-item.auth").show();
-				$("html body header section div.head-item.menu aside.navigator_tab ul.so").show();
-				app.ui.lightbox.close();
-				// Additional return for specific pages
-				if (/\/reg\/student\/admission\/$/.test(location.pathname)) window.refresh_statement();
-			} else app.ui.notify(1,[3,"Incorrect username or password."]);
-		});
+		else {
+			$("div.auth-wrapper button").prop("disabled", true);
+			$.post("/reg/student/auth.php", {
+				username: data.u,
+				password: data.p,
+				zone: 0
+			}, function(res, hsc) {
+				$("div.auth-wrapper button").prop("disabled", false);
+				var dat = JSON.parse(res);
+				if (dat.success) {
+					$("html body header section div.head-item.auth").show();
+					$("html body header section div.head-item.menu aside.navigator_tab ul.so").show();
+					app.ui.lightbox.close();
+					// Additional return for specific pages
+					if (/\/reg\/student\/admission\/$/.test(location.pathname)) window.refresh_statement();
+				} else {
+					app.ui.notify(1, dat.reason);
+				}
+			});
+		}
 	}
 	var auth_teacher = function() {
 		app.ui.modal.open("Enter access code", {response: "string", type: "password",cfx: function(res) {

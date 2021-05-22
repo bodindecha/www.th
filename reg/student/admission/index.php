@@ -38,31 +38,10 @@
 				}; s.send();
 				if (typeof cnf === "undefined") $.ajax({url: "/reg/resource/js/extend/std-adm-subform.js"});
 			}
-			function open_selection_form() {
-				var s = new XMLHttpRequest;
-				s.open("GET","/reg/student/admission/choose.php", true);
-				s.responseType = "text";
-				s.onload = function() {
-					var dat = JSON.parse(this.responseText);
-					setTimeout(function() { app.ui.modal.open(dat.cnftxt, {response: "confirm", option: ["Cancel", "OK"], values: [false, true], cfx: function(res) {
-						var ans = !["0", "false"].includes(res);
-						if (ans) {
-							$.post("/reg/student/admission/choose.php", {data: "confirmed"}, function(res, hsc){
-								var dat = JSON.parse(res);
-								if (dat.success) {
-									open_complete_form(dat);
-									app.ui.notify(1, [0, "Data confirmed."]);
-								} else disp_status(2);
-							});
-						}
-					} }); }, 250);
-					document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="info"><br>โปรดยืนยันข้อมูล<br><br><button class="blue" onClick="open_selection_form()">ตรวจสอบข้อมูล</button></div></center>';
-				}; s.send();
-			}
 			function open_complete_form(eti={}) {
 				var estr = ((!(typeof eti.time === "undefined") || !(typeof eti.ip === "undefined"))?"<br>":"")+(typeof eti.time === "undefined"?"":"ณ วันเวลาที่ "+eti.time+" ")+(typeof eti.ip === "undefined"?"":"ผ่าน IP "+eti.ip);
-				if (!(typeof eti.cgr === "undefined")) estr += '<br>โดยได้ยืนยันสายการเรียน '+eti.cgr;
-				document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message green"><?php if(isset($_SESSION['user_name']))echo $_SESSION['user_name']; ?> รหัสประจำตัวนักเรียน / เลขประจำตัวผู้สอบ <?php if(isset($_SESSION['user_id']))echo $_SESSION['user_id']; ?> ได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
+				if (!(typeof eti.cgr === "undefined")) estr += '<br>โดยได้'+(eti.cfm=="Y"?"ยืนยัน":"สละ")+'สิทธิ์สายการเรียน '+eti.cgr;
+				document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message '+(eti.cfm=="Y"?"green":"red")+'"><?php if(isset($_SESSION['user_name']))echo $_SESSION['user_name']; ?> รหัสประจำตัวนักเรียน / เลขประจำตัวผู้สอบ <?php if(isset($_SESSION['user_id']))echo $_SESSION['user_id']; ?> ได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
 				app.ui.modal.close();
 			}
 			$(document).ready(function() {
@@ -71,8 +50,7 @@
 						include("../../resource/appwork/appfunc.php");
 						switch ($_SESSION['user_data']["adm"]["step"]) {
 							case 1: echo 'open_confirmation_form();'; break;
-							case 2: echo 'open_selection_form();'; break;
-							case 3: echo 'open_complete_form({time: "'.$_SESSION['user_data']["adm"]["time"].'", ip: "'.$_SESSION['user_data']["adm"]["ip"].'", cgr: "'.code2group($_SESSION['user_data']["adm"]["cgroup"]).'"});'; break;
+							case 2: echo 'open_complete_form({time: "'.$_SESSION['user_data']["adm"]["time"].'", ip: "'.$_SESSION['user_data']["adm"]["ip"].'", cgr: "'.code2group($_SESSION['user_data']["adm"]["cgroup"]).'", "cfm": "'.$_SESSION['user_data']["adm"]["cfm"].'"});'; break;
 							default: echo 'open_unconfirmed_form();'; break;
 						}
 					}
