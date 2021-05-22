@@ -1,3 +1,6 @@
+<?php
+	if (!isset($my_url)) $my_url = ($_SERVER['REQUEST_URI']=="/")?"":"?return_url=".urlencode(ltrim($_SERVER['REQUEST_URI'], "/"));
+?>
 <header>
     <section>
 		<div class="head-item menu clickable click-fx">
@@ -29,7 +32,7 @@
 				</ul>
 				<?php
 					if (preg_match("/^\/reg\/(student|teacher)\//", $_SERVER['PHP_SELF'])) echo '<ul class="so">
-						<a class="red" href="'.(preg_match("/^\/reg\/teacher\//", $_SERVER['PHP_SELF'])?"/reg/teacher/auth.php":"javascript:app.sys.auth.check()").'"><li>ออกจากระบบ</li></a>
+						<a class="red" href="'.(preg_match("/^\/reg\/teacher\//", $_SERVER['PHP_SELF'])?"/reg/teacher/auth.php$my_url":"javascript:app.sys.auth.check()").'"><li>ออกจากระบบ</li></a>
 					</ul>';
 				?>
 			</aside>
@@ -46,6 +49,6 @@
 		<div class="head-item clrt clickable contain-img click-fx">
 			<a href="javascript:app.ui.change.theme('dark')"><img title="Toggle dark mode" style="transform: scale(0.75)" src="/reg/resource/images/lang_dark.png"></a>
 		</div>
-		<?php if (preg_match("/^\/reg\/(student|teacher)\//", $_SERVER['PHP_SELF'])) echo'<div class="head-item text clickable auth"><a href="'.(preg_match("/^\/reg\/teacher\//", $_SERVER['PHP_SELF'])?"/reg/teacher/auth.php":"javascript:app.sys.auth.check()").'"><span>ออกจากระบบ</span></a></div>';?>
+		<?php if (preg_match("/^\/reg\/(student|teacher)\//", $_SERVER['PHP_SELF'])) echo'<div class="head-item text clickable auth"><a href="'.(preg_match("/^\/reg\/teacher\//", $_SERVER['PHP_SELF'])?"/reg/teacher/auth.php?return_url=$my_url":"javascript:app.sys.auth.check()").'"><span>ออกจากระบบ</span></a></div>';?>
 	</section>
 </header>

@@ -4,7 +4,7 @@
 	$header_desc = "View uploaded files";
 	
 	include("../../resource/appwork/db_connect.php");
-	$cnfdata = $db -> query("SELECT stdcode,cfm,cgroup FROM chdata");
+	$cnfdata = $db -> query("SELECT stdcode,cfm,cgroup FROM chdata ORDER BY time");
 	$db -> close();
 ?>
 <!doctype html>
@@ -65,12 +65,12 @@
 		</style>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				// setTimeout(function() { sttl(500); }, 750);
+				setTimeout(function() { sttl(500); }, 750);
 			});
 			function sttl(speed) {
 				let rcdtbl = $("html body main div.container div.wrapper:nth-child(1) span"); rcdtbl.animate({
 					scrollTop: rcdtbl.children().first().height()-rcdtbl.height()+10,
-					scrollLeft: rcdtbl.children().first().width()-rcdtbl.width()+10
+					// scrollLeft: rcdtbl.children().first().width()-rcdtbl.width()+10
 				}, speed);
 			}
 			function ro(col) { w3.sortHTML("main div.container table", "tr:not(:first-child)", "td:nth-child("+col.toString()+")"); }

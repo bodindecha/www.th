@@ -1,9 +1,9 @@
 <?php
     session_start();
-    $my_url = ($_SERVER['REQUEST_URI']=="/")?"":"?return_url=".urlencode(ltrim($_SERVER['REQUEST_URI'], "/"));
+	$my_url = ($_SERVER['REQUEST_URI']=="/")?"":"?return_url=".urlencode(ltrim($_SERVER['REQUEST_URI'], "/"));
     if (preg_match("/^\/reg\/teacher\//", $_SERVER['PHP_SELF'])) {
 		$show_auth_form = false;
-		if (!isset($_SESSION['user_ac'])) header("Location: /reg/teacher/auth.php");
+		if (!isset($_SESSION['user_ac'])) header("Location: /reg/teacher/auth.php$my_url");
 	} else if (preg_match("/^\/reg\/resource\//", $_SERVER['PHP_SELF'])) {
 		$show_auth_form = false;
 	} else if (preg_match("/^\/reg\/student\//", $_SERVER['PHP_SELF'])) {
