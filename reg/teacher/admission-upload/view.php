@@ -106,7 +106,9 @@
 						<th>อื่นๆ</th>
 					</tr></tbody><tbody><tr><th colspan="5" style="text-align:center!important">ยืนยันข้อมูลการใช้สิทธิ์แล้ว</th></tr></tbody><tbody>
 					<?php
-						$vua = array(); include("../../resource/appwork/appfunc.php");
+						include("../../resource/appwork/appfunc.php");
+						$vua = array(); $c2n = array();
+						if ($stddata -> num_rows >= 1) { while ($er = $stddata -> fetch_assoc()) $c2n[$er["stdcode"]] = $er["natid"]; }
 						if ($cnfdata -> num_rows >= 1) {
 							$i = 1;
 							while ($er = $cnfdata -> fetch_assoc()) {
@@ -115,19 +117,16 @@
 								$stdgroup = ($er['cfm']=="Y") ? code2group(strtoupper($er['cgroup'])) : "";
 								$stdopt = ($er['cfm']=="N") ? '<a href="javascript:ve(3, '.strval($i).')">ดูไฟล์หลักฐาน</a>' : "";
 								echo "<tr><td>".$er['stdcode']."</td><td>$stdtype</td><td>$stdchoice</td><td>$stdgroup</td><td>$stdopt</td></tr>";
-								$i++; array_push($vua, $er['stdcode']);
+								$i++; array_push($vua, $c2n[$er['stdcode']]);
 							}
 						}
 					?>
 					</tbody><tbody><tr><th colspan="5" style="text-align:center!important">ยังไม่ยืนยันข้อมูลการใช้สิทธิ์</th></tr></tbody><tbody>
 					<?php
+						mysqli_data_seek($stddata, 0);
 						if ($stddata -> num_rows >= 1) {
 							while ($er = $stddata -> fetch_assoc()) {
-								if (in_array($er['natid'], $vua)) $vua = array_diff($vua, [$er['natid']]);
-								else if (in_array($er['stdcode'], $vua)) {
-									$vua = array_diff($vua, [$er['stdcode']]);
-									array_push($vua, $er['natid']);
-								} else {
+								if (!in_array($er['natid'], $vua)) {
 									$stdtype = (strlen($er['stdcode'])<6) ? "นักเรียนเก่า" : "สอบเข้าใหม่";
 									$stdgroup = code2group(strtoupper($er['cgroup']));
 									echo "<tr><td>".$er['stdcode']."</td><td>$stdtype</td><td></td><td>$stdgroup</td><td></td></tr>";

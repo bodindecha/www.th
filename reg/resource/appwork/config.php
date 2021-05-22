@@ -1,5 +1,5 @@
 <?php
 	$perm = array(
-		"admin" => array("TianTcl", "tannce", "lattapol.d")
+		"admin" => ["TianTcl", "tannce", "lattapol.d"]
 	);
 ?>
