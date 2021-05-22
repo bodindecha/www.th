@@ -70,8 +70,6 @@
 			if ($authen=="true") { //ถ้าผ่าน
 				echo '{"success": true}';
 				$_SESSION['user_ac'] = true;
-				
-				);
 			} else { //ถ้าไม่ผ่าน
 				echo '{"success": false}';
 			}

@@ -39,6 +39,8 @@
 	
 	// If submit action
 	if (isset($_POST['username']) && isset($_POST['password'])) {
+		// Connect to database
+		include("../resource/appwork/db_connect.php");
 		// Cut *,space and lowercase -> username (Ldap authen pass with * and space)
 		$_POST['username'] = str_replace("*", "", strtolower(trim($_POST['username'])));
 		// Check username and password not blank
@@ -63,47 +65,48 @@
 						$zonename = substr($authenzone[$zone][0], 3, 7);
 					} else $i++;
 				}
+				$search_sql = "";
 			} else { // NEW
-				include("../resource/appwork/db_connect.php");
-				$newstdlogin = $db -> query("SELECT stdcode,name,cgroup FROM stddata WHERE stdcode='".$_POST['username']."' AND natid = '".$_POST['password']."'");
-				$db -> close();
-				// คืนค่า $authen
+				$search_sql = " AND natid='".$_POST['password']."'";
+				$authen = "true";
 			}
+			
+			// Get std data
+			$newstdlogin = $db -> query("SELECT * FROM stddata WHERE stdcode='".$_POST['username']."'$search_sql");
+			if ($newstdlogin -> num_rows == 1) { while ($ers = $newstdlogin -> fetch_assoc()) $stddata = $ers; }
 				
-			if ($authen=="true") { //ถ้าผ่าน
+			if ($authen=="true" && isset($stddata)) { // ถ้าผ่าน
 				echo '{"success": true}';
 				$_SESSION['user_auth'] = 1;
-				$_SESSION['user_name'] = "";
-				$_SESSION['user_id'] = $_POST['username'];
+				$_SESSION['user_name'] = $stddata['name'];
+				$_SESSION['user_id'] = $stddata['stdcode'];
 				$_SESSION['user_data'] = array(
-					"adm" => array()
+					"natid" => $stddata['natid']
 				);
-				
-				include("../resource/appwork/db_connect.php");
-				$cnfdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
-				$db -> close();
-				if ($cnfdata -> num_rows == 1) {
-					while ($rs = $cnfdata -> fetch_assoc()) {
-						$_SESSION['user_data']["adm"]["time"] = $rs['time'];
-						$_SESSION['user_data']["adm"]["ip"] = $rs['ip'];
-						$_SESSION['user_data']["adm"]["step"] = ($rs['cgroup']==""? 2 : 3);
-					}
-				} else $_SESSION['user_data']["adm"]["step"] = 1;
-				
-			} else { //ถ้าไม่ผ่าน
+				$secondary_id = $db -> query("SELECT stdcode FROM stddata WHERE natid='".$_SESSION['user_data']["natid"]."' AND stdcode<>'".$_SESSION['user_id']."'");
+				if ($secondary_id -> num_rows == 1) { while ($gsi = $secondary_id -> fetch_assoc()) $_SESSION['user_data']["code2"] = $gsi['stdcode']; }
+			} else { // ถ้าไม่ผ่าน
 				echo '{"success": false}';
 			}
 		}
 		
-		include("../resource/appwork/db_connect.php");
-		$cnfdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
+		// Get /std/admission data
+		if (isset($_SESSION['user_auth'])) {
+			$cnfdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
+			if (isset($_SESSION['user_data']["code2"])) {
+				$dupdata = $db -> query("SELECT cgroup,time,ip FROM chdata WHERE stdcode='".$_SESSION['user_data']["code2"]."'");
+				$has_dup = ($dupdata -> num_rows == 1);
+			} else $has_dup = false;
+			if ($cnfdata -> num_rows == 1 || $has_dup) { while ($rs = ($has_dup?$dupdata:$cnfdata) -> fetch_assoc()) {
+				$_SESSION['user_data']["adm"] = array();
+				$_SESSION['user_data']["adm"]["time"] = $rs['time'];
+				$_SESSION['user_data']["adm"]["ip"] = $rs['ip'];
+				$_SESSION['user_data']["adm"]["step"] =  ($has_dup || ctype_upper($rs['cgroup'])? 3 : 2);
+				$_SESSION['user_data']["adm"][(ctype_lower($rs['cgroup'])?"s":"c")."group"] = $rs['cgroup'];
+			} } else $_SESSION['user_data']["adm"]["step"] = 1;
+		}
+		
 		$db -> close();
-		if ($cnfdata -> num_rows == 1) { while ($rs = $cnfdata -> fetch_assoc()) {
-			$_SESSION['user_data']["adm"]["time"] = $rs['time'];
-			$_SESSION['user_data']["adm"]["ip"] = $rs['ip'];
-			$_SESSION['user_data']["adm"]["step"] = (ctype_lower($rs['cgroup'])? 2 : 3);
-			if ($_SESSION['user_data']["adm"]["step"]==2) $_SESSION['user_data']["adm"]["sgroup"] = $rs['cgroup'];
-		} } else $_SESSION['user_data']["adm"]["step"] = 1;
 		
 	} else { header("Location: /reg/student/"); }
 ?>

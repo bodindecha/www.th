@@ -22,6 +22,7 @@
 				border-radius: 5px; border: 1px solid var(--clr-bs-gray);
 			}
 			main div.container div.form-action form > * { margin: 25px 0px; }
+			main div.container div.form-action div.message { line-height: 30px; }
 		</style>
 		<script type="text/javascript">
 			function open_unconfirmed_form() {
@@ -49,7 +50,7 @@
 							$.post("/reg/student/admission/choose.php", {data: "confirmed"}, function(res, hsc){
 								var dat = JSON.parse(res);
 								if (dat.success) {
-									open_complete_form({time: dat.time, ip: dat.ip});
+									open_complete_form(dat);
 									app.ui.notify(1, [0, "Data confirmed."]);
 								} else disp_status(2);
 							});
@@ -60,16 +61,18 @@
 			}
 			function open_complete_form(eti={}) {
 				var estr = ((!(typeof eti.time === "undefined") || !(typeof eti.ip === "undefined"))?"<br>":"")+(typeof eti.time === "undefined"?"":"ณ วันเวลาที่ "+eti.time+" ")+(typeof eti.ip === "undefined"?"":"ผ่าน IP "+eti.ip);
-				document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message green">คุณได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
+				if (!(typeof eti.cgr === "undefined")) estr += '<br>โดยได้ยืนยันสายการเรียน '+eti.cgr;
+				document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message green"><?php if(isset($_SESSION['user_name']))echo $_SESSION['user_name']; ?> รหัสประจำตัวนักเรียน / เลขประจำตัวผู้สอบ <?php if(isset($_SESSION['user_id']))echo $_SESSION['user_id']; ?> ได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
 				app.ui.modal.close();
 			}
 			$(document).ready(function() {
 				<?php
 					if (isset($_SESSION['user_auth'])) {
+						include("../../resource/appwork/appfunc.php");
 						switch ($_SESSION['user_data']["adm"]["step"]) {
 							case 1: echo 'open_confirmation_form();'; break;
 							case 2: echo 'open_selection_form();'; break;
-							case 3: echo 'open_complete_form({time: "'.$_SESSION['user_data']["adm"]["time"].'", ip: "'.$_SESSION['user_data']["adm"]["ip"].'"});'; break;
+							case 3: echo 'open_complete_form({time: "'.$_SESSION['user_data']["adm"]["time"].'", ip: "'.$_SESSION['user_data']["adm"]["ip"].'", cgr: "'.code2group($_SESSION['user_data']["adm"]["cgroup"]).'"});'; break;
 							default: echo 'open_unconfirmed_form();'; break;
 						}
 					}
