@@ -64,7 +64,7 @@
 				if (eti==0) document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message gray">You are unauthorized</div></center>';
 				else {
 					var estr = ((!(typeof eti.time === "undefined") || !(typeof eti.ip === "undefined"))?"<br>":"")+(typeof eti.time === "undefined"?"":"ณ วันเวลาที่ "+eti.time+" ")+(typeof eti.ip === "undefined"?"":"ผ่าน IP "+eti.ip);
-					if (!(typeof eti.cgr === "undefined")) estr += '<br>โดยได้'+(eti.cfm=="Y"?'ยืนยันสิทธิ์สายการเรียน '+eti.cgr:"สละสิทธิ์การเข้าศึกษาต่อที่โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี)");
+					if (!(typeof eti.cgr === "undefined")) estr += '<br>โดยได้'+(eti.cfm=="Y"?'ยืนยันสิทธิ์กลุ่มการเรียน '+eti.cgr:"สละสิทธิ์การเข้าศึกษาต่อที่โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี)");
 					document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message '+(eti.cfm=="Y"?"green":"red")+'"><?php if(isset($_SESSION['user_name']))echo $_SESSION['user_name']; ?> รหัสประจำตัวนักเรียน / เลขประจำตัวผู้สอบ <?php if(isset($_SESSION['user_id']))echo $_SESSION['user_id']; ?> ได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
 				}
 			}
@@ -93,7 +93,7 @@
 				history.replaceState(null,null,location.pathname);
 				var prior, msg; switch (status) {
 					case 0: prior = 0, msg = reason+"Your data has been record."; break;
-					case 1: prior = 3, msg = "Unable to upload image. Please try again."; break;
+					case 1: prior = 3, msg = "Unable to upload evidence. Please try again."; break;
 					case 2: prior = 3, msg = "Unable to connect to database. Please try again."; break;
 					case 3: prior = 1, msg = "You've already made a record at "+reason; break;
 				} app.ui.notify(1, [prior, msg]);
