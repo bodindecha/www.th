@@ -38,11 +38,13 @@
 				}; s.send();
 				if (typeof cnf === "undefined") $.ajax({url: "/reg/resource/js/extend/std-adm-subform.js"});
 			}
-			function open_complete_form(eti={}) {
-				var estr = ((!(typeof eti.time === "undefined") || !(typeof eti.ip === "undefined"))?"<br>":"")+(typeof eti.time === "undefined"?"":"ณ วันเวลาที่ "+eti.time+" ")+(typeof eti.ip === "undefined"?"":"ผ่าน IP "+eti.ip);
-				if (!(typeof eti.cgr === "undefined")) estr += '<br>โดยได้'+(eti.cfm=="Y"?"ยืนยัน":"สละ")+'สิทธิ์สายการเรียน '+eti.cgr;
-				document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message '+(eti.cfm=="Y"?"green":"red")+'"><?php if(isset($_SESSION['user_name']))echo $_SESSION['user_name']; ?> รหัสประจำตัวนักเรียน / เลขประจำตัวผู้สอบ <?php if(isset($_SESSION['user_id']))echo $_SESSION['user_id']; ?> ได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
-				app.ui.modal.close();
+			function open_complete_form(eti=0) {
+				if (eti==0) document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message gray">You are unauthorized</div></center>';
+				else {
+					var estr = ((!(typeof eti.time === "undefined") || !(typeof eti.ip === "undefined"))?"<br>":"")+(typeof eti.time === "undefined"?"":"ณ วันเวลาที่ "+eti.time+" ")+(typeof eti.ip === "undefined"?"":"ผ่าน IP "+eti.ip);
+					if (!(typeof eti.cgr === "undefined")) estr += '<br>โดยได้'+(eti.cfm=="Y"?'ยืนยันสิทธิ์สายการเรียน '+eti.cgr:"สละสิทธิ์การเข้าศึกษาต่อที่โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี)");
+					document.querySelector("main div.container div.form-action").innerHTML = '<center><div class="message '+(eti.cfm=="Y"?"green":"red")+'"><?php if(isset($_SESSION['user_name']))echo $_SESSION['user_name']; ?> รหัสประจำตัวนักเรียน / เลขประจำตัวผู้สอบ <?php if(isset($_SESSION['user_id']))echo $_SESSION['user_id']; ?> ได้ดำเนินการเรียบร้อยแล้ว'+estr+'</div></center>';
+				}
 			}
 			$(document).ready(function() {
 				<?php

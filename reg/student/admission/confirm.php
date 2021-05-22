@@ -16,12 +16,13 @@
 		if (!isset($status)) {
 			include("../../resource/appwork/db_connect.php");
 			include("../../resource/appwork/getip.php");
-			$dt = date("Y-m-d H:i:s");
 			$chq_dup = $db -> query("SELECT time FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
 			if ($chq_dup -> num_rows == 0) {
 				$_POST['group'] = $_POST['group'];
 				if ($db -> query("INSERT INTO chdata (stdcode,cfm,cgroup,ip) VALUES ('".$_SESSION['user_id']."','".$_POST['right']."','".$_POST['group']."','$ip')")) {
-					$status = 0;
+					$gtq = $db -> query("SELECT time FROM chdata WHERE stdcode='".$_SESSION['user_id']."'");
+					if ($gtq -> num_rows == 1) { while ($er = $gtq -> fetch_assoc()) $dt = $er['time']; }
+					else $dt = date("Y-m-d H:i:s", time()); $status = 0;
 					$_SESSION['user_data']["adm"]["cgroup"] = $_POST['group'];
 					$_SESSION['user_data']["adm"]["cfm"] = $_POST['right'];
 					$_SESSION['user_data']["adm"]["time"] = $dt;
@@ -55,5 +56,5 @@
 			'<div class="text"><b>หมายเหตุ</b> การยืนยันสิทธิ์ มีผลต่อสิทธิ์การเข้าศึกษาต่อและการจัดแผนการเรียน</div>',
 			'<center><button name="data" class="blue" onClick="return cnf.validate()">บันทึกข้อมูล</button></center>',
 			'</form>';
-	} else echo '<center>You are unauthorized</center>';
+	} else echo '<center><div class="message gray">You are unauthorized</div></center>';
 ?>
