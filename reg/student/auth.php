@@ -76,7 +76,6 @@
 			}
 			
 			// Get std data
-			
 			$newstdlogin = $db -> query("SELECT * FROM stddata WHERE stdcode='".$_POST['username']."'$search_sql");
 			if ($newstdlogin -> num_rows == 1) { while ($ers = $newstdlogin -> fetch_assoc()) $stddata = $ers; }
 				
