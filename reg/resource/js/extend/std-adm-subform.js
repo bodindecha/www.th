@@ -28,10 +28,11 @@ const cnf = {
 			app.ui.notify(1, [2, "You must select a evidence file.\nกรุณาเลือกไฟล์หลักฐาน"]);
 			return false;
 		} else {
+			var want = document.querySelector('div.form-action input[type="radio"]:checked').value=="Y";
 			var name = $('div.form-action u.name').text(), id = $('div.form-action u.id').text(),
-				right = document.querySelector('div.form-action input[type="radio"]:checked').value=="Y"?"ยืนยัน":"สละ",
+				right = want ? "ยืนยัน" : "สละ",
 				group = cnf.group2code(document.querySelector('div.form-action [name="group"]').value);
-			return confirm("ข้าพเจ้า "+name+" รหัสประจำตัวนักเรียน (นักเรียนเดิม) / เลขประจำตัวผู้สอบ (นักเรียนใหม่) "+id+" ขอ"+right+"สิทธิ์การเข้าศึกษาต่อ ชั้นมัธยมศึกษาปีที่ 4 แผนการเรียน "+group);
+			return confirm("ข้าพเจ้า "+name+" รหัสประจำตัวนักเรียน (นักเรียนเดิม) / เลขประจำตัวผู้สอบ (นักเรียนใหม่) "+id+" ขอ"+right+"สิทธิ์การเข้าศึกษาต่อ ชั้นมัธยมศึกษาปีที่ 4 "+(want?"แผนการเรียน "+group:"โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี)"));
 		}
 	}, tf : function(me) {
 		var ckq = $("div.form-action span.file i");
