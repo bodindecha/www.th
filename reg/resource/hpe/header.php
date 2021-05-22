@@ -21,7 +21,7 @@
 					<!--a href="/reg/"><li></li></a-->
 				</ul>
 				<ul>
-					<a href="/reg/teacher/"><li>เข้าสู่ระบบอาจารย์</li></a>
+					<a href="/reg/teacher/"><li>เข้าสู่ระบบครู</li></a>
 					<?php
 						if (isset($_SESSION['user_ac'])) {
 							echo '<a href="/reg/teacher/admission-upload/view.php"><li>• ดูไฟล์หลักฐาน</li></a>';
@@ -49,6 +49,6 @@
 		<div class="head-item clrt clickable contain-img click-fx">
 			<a href="javascript:app.ui.change.theme('dark')"><img title="Toggle dark mode" style="transform: scale(0.75)" src="/reg/resource/images/lang_dark.png"></a>
 		</div>
-		<?php if (preg_match("/^\/reg\/(student|teacher)\//", $_SERVER['PHP_SELF'])) echo'<div class="head-item text clickable auth"><a href="'.(preg_match("/^\/reg\/teacher\//", $_SERVER['PHP_SELF'])?"/reg/teacher/auth.php?return_url=$my_url":"javascript:app.sys.auth.check()").'"><span>ออกจากระบบ</span></a></div>';?>
+		<?php if (preg_match("/^\/reg\/(student|teacher)\//", $_SERVER['PHP_SELF'])) echo'<div class="head-item text clickable auth"><a href="'.(preg_match("/^\/reg\/teacher\//", $_SERVER['PHP_SELF'])?"/reg/teacher/auth.php$my_url":"javascript:app.sys.auth.check()").'"><span>ออกจากระบบ</span></a></div>';?>
 	</section>
 </header>

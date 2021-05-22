@@ -92,31 +92,31 @@
 	<head>';
 		include("../resource/hpe/heading.php"); include("../resource/hpe/init_ss.php");
 		echo '<style type="text/css">
-			main div {
+			main div.container {
 				position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
 				width: 420px; height: 100px;
 				text-align: center; line-height: 50px;
 			}
-			main div button {
+			main div.container button {
 				padding: 5px 15px;
 				font-family: \'Sarabun\', serif; font-size: 18.75px; line-height: 30px;
 				cursor: pointer;
 			}
 		</style>
 		<script type="text/javascript">
-			function fac() { app.sys.auth.teacher(); document.querySelector("html body section.modal span.ctxt input").focus(); }
+			function fac() { app.sys.auth.tac("'.$_GET['return_url'].'"); document.querySelector("html body section.modal span.ctxt input").focus(); }
 			$(document).ready(function() {
-				fac();
+				// fac();
 				$("html body header section div.head-item.auth").remove();
-			});
+			}); var af_showed = false;
 		</script>
 	</head>
 	<body>';
 		include("../resource/hpe/header.php");
 		echo '<main shrink="'.(($_COOKIE['sui_open-nt'])??"false").'">
-			<div>
-				<span>Please provide access code to continue.<br></span>
-				<button onClick="fac()" class="blue">กรอก</button>
+			<div class="container">
+				<span>Please authorize to continue.<br></span>
+				<button onClick="fac()" class="blue">Provide access code</button> <button onClick="app.sys.auth.teacher()" class="blue">Authenticate</button>
 			</div>
 		</main>';
 		include("../resource/hpe/material.php");

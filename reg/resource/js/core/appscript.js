@@ -392,14 +392,14 @@ function initial_app() {
 			});
 		}
 	}
-	var auth_teacher = function() {
+	var auth_tac = function(ru) {
 		app.ui.modal.open("Enter access code", {response: "string", type: "password",cfx: function(res) {
 			if (res!="") { // "IctBodin4113"
 				$.post("/reg/teacher/auth.php",{ac: res}, function(res2, hsc){
 					var dat = JSON.parse(res2);
 					if (dat.success) {
 						$.ajax({url: "/reg/resource/appwork/unauth.php?f=t"});
-						location = "/reg/teacher/";
+						location = "/"+(ru!=""?ru:"reg/teacher/");
 					}
 					else {
 						setTimeout(window.fac, 500);
@@ -408,6 +408,39 @@ function initial_app() {
 				});
 			}
 		}});
+	}
+	var auth_teach = function() {
+		if (md_var.showing) app.ui.modal.close();
+		app.ui.lightbox.open("top", {title: "เข้าสู่ระบบครูผู้สอน", allowclose: true,
+			html: '<style type="text/css">div.auth-wrapper { margin: 10px 0px; padding: 5px; } div.auth-wrapper > * { margin: 2.5px 0px; font-size: 20px; font-family: "THSarabunNew", serif; } div.auth-wrapper label { display: block; } div.auth-wrapper label span { cursor: pointer; color: var(--clr-pp-blue-grey-700); } div.auth-wrapper label span:hover { background-color: rgba(0, 0, 0, 0.125); } div.auth-wrapper input, div.auth-wrapper select { border-radius: 3px; border: 1px solid var(--clr-bs-gray-dark); padding: 0px 10px; width: calc(100% - 22.5px); transition: var(--time-tst-fast); } div.auth-wrapper input:focus, div.auth-wrapper select:focus { box-shadow: 0 0 7.5px .125px var(--clr-bs-blue) } div.auth-wrapper button { margin-top: 20px; } div.auth-wrapper font { font-size: 15px; } div.auth-wrapper font a:link, div.auth-wrapper font a:visited { text-decoration: none; color: var(--clr-bd-light-blue) } div.auth-wrapper font a:hover, div.auth-wrapper font a:active { text-decoration: underline; color: var(--clr-bd-low-light-blue) } @media only screen and (max-width: 768px) { div.auth-wrapper > * { font-size: 12.5px; } div.auth-wrapper font { font-size: 12.5px; } }</style><div class="auth-wrapper"><label>ชื่อผู้ใช้งาน</label><input name="user" type="text" autofocus><br><label>รหัสผ่าน</label><input name="pass" type="password"><br><label>ประเภทผู้ใช้งาน</label><select name="zone"><option value="0">ข้าราชการครู</option><option value="1">ครูอัตราจ้าง/บุคลากร</option></select><br><center><button class="blue" onClick="app.sys.auth.t_sbmt()">เข้าสู่ระบบ</button></center><br><center><font><a href="/reg/student/">เข้าสู่ระบบนักเรียน</a></font></center></div>'
+		});
+		$.ajax({url: "/reg/resource/appwork/unauth.php?f=t"});
+		// Additional return for specific pages
+		// null
+	}
+	var auth_teacher = function() {
+		var data = {u: $("section.lightbox input[name=\"user\"]").val(), p: $("section.lightbox input[name=\"pass\"]").val()};
+		if (data.u.trim()=="" || data.p.trim()=="") app.ui.notify(1, [2, "Please check your inputs.\nโปรดตรวจสอบข้อมูลการเข้าสู่ระบบ"]);
+		else {
+			$("div.auth-wrapper button").prop("disabled", true);
+			$.post("/reg/teacher/auth.php", {
+				username: data.u,
+				password: data.p,
+				zone: parseInt(document.querySelector("section.lightbox select").value)
+			}, function(res, hsc) {
+				$("div.auth-wrapper button").prop("disabled", false);
+				var dat = JSON.parse(res);
+				if (dat.success) {
+					$("html body header section div.head-item.auth").show();
+					$("html body header section div.head-item.menu aside.navigator_tab ul.so").show();
+					app.ui.lightbox.close();
+					// Additional return for specific pages
+					// null
+				} else {
+					app.ui.notify(1, [3, "Incorrect username or password"]);
+				}
+			});
+		}
 	}
 	return {
 		ui: {
@@ -444,7 +477,9 @@ function initial_app() {
 			auth: {
 				check: authorize,
 				submit: auth_submit,
-				teacher: auth_teacher
+				tac: function(a="") { auth_tac(a); },
+				teacher: auth_teach,
+				t_sbmt: auth_teacher
 			}
 		}
 	};
