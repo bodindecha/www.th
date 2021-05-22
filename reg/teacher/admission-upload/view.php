@@ -66,6 +66,7 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				setTimeout(function() { sttl(500); }, 750);
+				<?php if (!in_array($_SESSION['user_perm'], array(50))) echo 'alert("You are unauthorized"); location="/reg/teacher/";'; ?>
 			});
 			function sttl(speed) {
 				let rcdtbl = $("html body main div.container div.wrapper:nth-child(1) span"); rcdtbl.animate({
