@@ -1,3 +1,5 @@
 <?php
-	// null
+	$perm = array(
+		"admin" => array("TianTcl", "tannce", "lattapol.d")
+	);
 ?>

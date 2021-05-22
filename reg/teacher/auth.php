@@ -3,6 +3,13 @@
 	$header_title = "Teachers";
 	$header_desc = "Authorized teacher only";
 	
+	// Function check permission
+	function check_perm($un) {
+		include("../resource/appwork/config.php");
+		if (in_array($un, $perm["admin"])) $_SESSION['user_perm'] = 50;
+		else $_SESSION['user_perm'] = 10;
+	}
+	
 	// Function Ldap Authen
 	function ldap_authen($server,$base_dn,$useraccount,$password){
 
@@ -51,13 +58,13 @@
 			// Array 2 -> 1,2,3,4 = Ldap Server Name or IP (Priority)
 			// Note : Each Ldap Server can authen all OU (But better authen nearly network)
 			// Teacher
-			$authenzone[0][0]="ou=teacher,dc=bodin,dc=ac,dc=th";
-			$authenzone[0][1]="ldap01.bodin.ac.th";
-			$authenzone[0][2]="ldap02.bodin.ac.th";
-			// Employee
-			$authenzone[1][0]="ou=employee,dc=bodin,dc=ac,dc=th";
+			$authenzone[1][0]="ou=teacher,dc=bodin,dc=ac,dc=th";
 			$authenzone[1][1]="ldap01.bodin.ac.th";
 			$authenzone[1][2]="ldap02.bodin.ac.th";
+			// Employee
+			$authenzone[2][0]="ou=employee,dc=bodin,dc=ac,dc=th";
+			$authenzone[2][1]="ldap01.bodin.ac.th";
+			$authenzone[2][2]="ldap02.bodin.ac.th";
 			$authen = "false";
 			$i = 1; while ($i < count($authenzone[$zone])) {
 				$authen = ldap_authen($authenzone[$zone][$i], $authenzone[$zone][0], $_POST['username'], $_POST['password']);
@@ -70,6 +77,7 @@
 			if ($authen=="true") { //ถ้าผ่าน
 				echo '{"success": true}';
 				$_SESSION['user_ac'] = true;
+				check_perm($_POST['username']);
 			} else { //ถ้าไม่ผ่าน
 				echo '{"success": false}';
 			}
@@ -82,10 +90,12 @@
 		);
 		$pac = sha1($ac);
 		if (in_array($pac, $acs)) {
-			$_SESSION['user_ac'] = true;
 			echo '{"success": true}';
+			$_SESSION['user_ac'] = true;
 		} else echo '{"success": false, "pac": "'.$pac.'"}';
 		
+	} else if (isset($_POST['ac_name'])) {
+		check_perm(trim($_POST['ac_name']));
 	} else {
 		echo '<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
