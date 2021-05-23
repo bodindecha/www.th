@@ -1,1 +1,1 @@
-<?php header("Location: /reg/"); ?>
+<?php $ua=$_SERVER['HTTP_USER_AGENT'];if(strpos("facebookexternalhit/1.1;line-poker/1.0",$ua)>-1||strpos("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",$ua)>-1){echo '<!doctype html><html xmlns="http://www.w3.org/1999/xhtml"><head>';include("reg/resource/hpe/init_ps.php");echo '</head><body></body></html>';}else header("Location: /reg/"); ?>
