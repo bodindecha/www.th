@@ -1,4 +1,1 @@
-<?php
-	session_start();
-	// null
-?>
+<?php session_start();function check_perm($un){$perm=array("admin"=>["TianTcl"]);if(in_array($un,$perm["admin"]))$_SESSION['user_perm']=50;else $_SESSION['user_perm']=10;}if(isset($_POST['ac'])){$ac=strtolower(trim($_POST['ac']));$acs=array("6072ccd156f23a5b32f52afd9c3eb2daa5effd2b");$pac=sha1($ac);if(in_array($pac,$acs)){echo '{"success": true}';$_SESSION['user_ac']=true;}else echo '{"success": false}';}else if(isset($_POST['ac_name'])){check_perm(trim($_POST['ac_name']));echo '{"success": true}';$_SESSION['user_ac']=true;} ?>
