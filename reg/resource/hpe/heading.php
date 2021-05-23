@@ -1,5 +1,5 @@
 		<?php
-			$heading_name = "Bodindecha (Sing Singhaseni) School"; $heading_domain = "บดินทรเดชา.th";
+			$heading_name = "Bodindecha (Sing Singhaseni) School"; $heading_domain = "xn--b3ctalje0eugm7j.th";
 			$heading_title = ((isset($header_title))?$header_title." - ":"").$heading_name;
 			$heading_desc = (isset($header_desc))?str_replace("\"","'",$header_desc):"โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี)";
 			$heading_cover = ((isset($header_cover))?$header_cover:"images/cover-1");
