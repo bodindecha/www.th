@@ -10,8 +10,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title><?php echo $heading_title;?></title>
 		<meta name="description" content="<?php echo $heading_desc;?>">
-		<link rel="icon" href="/favicon.ico" />
-		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="icon" href="https://<?php echo $heading_domain; ?>/favicon.ico" />
+		<link rel="shortcut icon" href="https://<?php echo $heading_domain; ?>/favicon.ico" />
 		<?php if ($_SERVER['REQUEST_URI'] != "/error/904") echo '<noscript><meta http-equiv="refresh" content="0; /error.php?hsc=904"></noscript>'; ?>
 		<!-- Twitter card sharing prepare -->
 		<meta name="twitter:card" content="summary_large_image">
@@ -19,7 +19,7 @@
 		<meta name="twitter:creator" content="@TianTcl">
 		<meta name="twitter:title" content="<?php echo $heading_title;?>">
 		<meta name="twitter:description" content="<?php echo $heading_desc;?>">
-		<meta name="twitter:image" content="/reg/resource/<?php echo $heading_cover;?>.png">
+		<meta name="twitter:image" content="https://<?php echo $heading_domain; ?>/reg/resource/<?php echo $heading_cover;?>.png">
 		<meta name="twitter:app:country" content="th"/>
         <meta name="twitter:app:name:ipad" content="<?php echo $heading_name; ?>"/>
         <meta name="twitter:app:name:iphone" content="<?php echo $heading_name; ?>"/>
@@ -27,7 +27,7 @@
 		<!-- Link sharing prepare -->
 		<meta property="og:title" content="<?php echo $heading_title;?>" />
 		<meta property="og:description" content="<?php echo $heading_desc;?>" />
-		<meta property="og:image" content="/reg/resource/<?php echo $heading_cover;?>.png" />
+		<meta property="og:image" content="https://<?php echo $heading_domain; ?>/reg/resource/<?php echo $heading_cover;?>.png" />
 		<meta property="og:locale" content="en_US" />
 		<meta property="og:locale:alternate" content="th_th" />
 		<meta property="og:type" content="website" />
@@ -47,7 +47,7 @@
 		<meta name="apple-mobile-web-app-title" content="<?php echo $heading_name; ?>">
 		<link rel="apple-touch-startup-image" href="/favicon.ico">
 		<meta name="apple-mobile-web-app-status-bar-style" content="#15499A">
-		<link rel="apple-touch-icon" href="/reg/resource/images/cover-1.png">
+		<link rel="apple-touch-icon" href="https://<?php echo $heading_domain; ?>/reg/resource/images/cover-1.png">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<link rel="canonical" href="https://<?php echo $heading_domain; ?>"/>
 		<!-- Resources loading -->
