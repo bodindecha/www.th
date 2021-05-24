@@ -2,7 +2,7 @@
 			$heading_name = "Bodindecha (Sing Singhaseni) School"; $heading_domain = "xn--b3ctalje0eugm7j.th";
 			$heading_title = ((isset($header_title))?$header_title." - ":"").$heading_name;
 			$heading_desc = (isset($header_desc))?str_replace("\"","'",$header_desc):"โรงเรียนบดินทรเดชา (สิงห์ สิงหเสนี)";
-			$heading_cover = ((isset($header_cover))?$header_cover:"images/cover-1");
+			$heading_cover = ((isset($header_cover))?$header_cover:"images/cover-3");
 		?>
 		<!-- Settings -->
 		<meta charset="UTF-8" />
@@ -10,8 +10,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title><?php echo $heading_title;?></title>
 		<meta name="description" content="<?php echo $heading_desc;?>">
-		<link rel="icon" href="https://<?php echo $heading_domain; ?>/favicon.ico" />
-		<link rel="shortcut icon" href="https://<?php echo $heading_domain; ?>/favicon.ico" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="shortcut icon" href="/favicon.ico" />
 		<?php if ($_SERVER['REQUEST_URI'] != "/error/904") echo '<noscript><meta http-equiv="refresh" content="0; /error.php?hsc=904"></noscript>'; ?>
 		<!-- Twitter card sharing prepare -->
 		<meta name="twitter:card" content="summary_large_image">
@@ -33,11 +33,11 @@
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="https://<?php echo $heading_domain; ?>/" />
 		<meta property="og:site_name" content="<?php echo $heading_name; ?>" />
-		<!meta property="article:publisher" content="https://<?php echo $heading_domain; ?>" />
-		<meta property="article:modified_time" content="2021-05-13T19:15:00+00:00" />
+		<meta property="article:publisher" content="https://<?php echo $heading_domain; ?>" />
+		<meta property="article:modified_time" content="2021-05-24T08:15:00+00:00" />
 		<!-- Third parties app setup -->
-		<!meta property="fb:app_id" content="132941421905432" />
-		<!meta name="google-site-verification" content="gRW1HQaoV9CcViylNyqfgrm2nXztykHOtW4oakRFUXE" />
+		<!meta property="fb:app_id" content="" />
+		<!meta name="google-site-verification" content="" />
 		<!-- Android standalone A2HS webapp prepare -->
 		<!link rel="manifest" href="/reg/resource/appmanifest.webmanifest" crossorigin="use-credentials">
 		<!link rel="manifest" href="/reg/resource/extn-manifest.json">
@@ -47,7 +47,7 @@
 		<meta name="apple-mobile-web-app-title" content="<?php echo $heading_name; ?>">
 		<link rel="apple-touch-startup-image" href="/favicon.ico">
 		<meta name="apple-mobile-web-app-status-bar-style" content="#15499A">
-		<link rel="apple-touch-icon" href="https://<?php echo $heading_domain; ?>/reg/resource/images/cover-1.png">
+		<link rel="apple-touch-icon" href="https://<?php echo $heading_domain; ?>/reg/resource/<?php echo $heading_cover;?>.png">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<link rel="canonical" href="https://<?php echo $heading_domain; ?>"/>
 		<!-- Resources loading -->
