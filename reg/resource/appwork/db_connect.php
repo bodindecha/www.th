@@ -1,1 +1,1 @@
-<?php $db=new mysqli("localhost","th_m4cfm","ixpdlTb78n5PX1nq","th_m4cfm");$db->set_charset("utf8"); ?>
+<?php $db=new mysqli("localhost","DB User","password","DB name");$db->set_charset("utf8"); ?>
